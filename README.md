@@ -1,6 +1,6 @@
 # QA lab
 
-### Here are automated [smoke tests](#https://github.com/Arondondon/QA_lab_selenium/tree/master/src/test/java/SmokeTest.java) of the web service [Regard](#https://www.regard.ru/)
+### Here are automated [smoke tests](https://github.com/Arondondon/QA_lab_selenium/tree/master/src/test/java/SmokeTest.java) of the web service [Regard](https://www.regard.ru/)
 
 ### The following functions are tested here:
 1. catalog navigation
