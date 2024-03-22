@@ -5,22 +5,19 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.CartPage;
+import pages.ComparisonPage;
 import pages.LaptopsPage;
 import pages.MainPage;
-import utils.Locators;
 import utils.Sleeping;
 
-import java.util.concurrent.TimeUnit;
 
 public class SmokeTest {
 
     private WebDriver driver;
 
-    private String url;
-
     @Before
     public void preparation(){
-        url = "https://www.regard.ru/";
+        String url = "https://www.regard.ru/";
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
@@ -93,6 +90,39 @@ public class SmokeTest {
 
         Assert.assertEquals(firstItemName, cartPage.getFirstItemName());
         Assert.assertEquals(cartPage.getHeaderText(), "Корзина");
+    }
+
+    /**
+     * 1) Тыкнуть по строке поиска
+     * <p>2) Ввести "Ноутбуки"
+     * <p>3) Тыкнуть по кнопке поиска (открывается новая страница)
+     * <p>4) Тыкнуть на кнопку сравнения у первого товара
+     * <p>5) Тыкнуть на кнопку сравнения у второго товара
+     * <p>6) Запомнить названия первого и второго товаров
+     * <p>7) Тыкнуть на кнопку "Сравнение" (открывается новая страница)
+     * <p>8) Проверить, что заголовок страницы - Сравнение
+     * <p>9) Проверить, что в разделе сравнения лежат те товары, которые мы добавили туда
+     */
+    @Test
+    public void testComparison() {
+        MainPage mainPage = new MainPage(driver);
+        String searchText = "Ноутбуки";
+
+        LaptopsPage laptopsPage = mainPage
+                .clickSearchInput()
+                .inputTextToSearchInput(searchText)
+                .clickSearchButton()
+                .clickFirstItemCompareButton()
+                .clickSecondItemCompareButton();
+
+        String firstItemName = laptopsPage.getFirstItemName();
+        String secondItemName = laptopsPage.getSecondItemName();
+
+        ComparisonPage comparisonPage = laptopsPage.clickComparisonButton();
+
+        Assert.assertEquals(comparisonPage.getHeaderText(), "Сравнение");
+        Assert.assertEquals("Ноутбук " + comparisonPage.getFirstItemName(), secondItemName);
+        Assert.assertEquals("Ноутбук " + comparisonPage.getSecondItemName(), firstItemName);
     }
 
     @After
